@@ -31,7 +31,6 @@ import com.mapbox.api.directions.v5.models.DirectionsRoute
 import com.mapbox.geojson.Feature
 import com.mapbox.geojson.FeatureCollection
 import com.mapbox.geojson.Point
-import com.mapbox.mapboxsdk.annotations.Marker
 import com.mapbox.mapboxsdk.geometry.LatLng
 import com.mapbox.mapboxsdk.style.layers.PropertyFactory
 import com.mapbox.mapboxsdk.style.layers.SymbolLayer
@@ -56,14 +55,11 @@ class MainActivity : AppCompatActivity(), LocationEngineListener, PermissionsLis
     private var locationEngine: LocationEngine? = null
     private lateinit var originLocation: Location
 
-    private var destinationMarker: Marker? = null
     private var originCoord : LatLng? = null
-    private var destinationCoord : LatLng? = null
 
     private var originPosition : Point? = null
     private var destinationPosition : Point? = null
     private var currentRoute : DirectionsRoute? = null
-    private val TAG : String = "DirectionsActivity"
     private var navigationMapRoute : NavigationMapRoute? = null
 
     private lateinit var routeSnackbar : Snackbar
@@ -75,7 +71,7 @@ class MainActivity : AppCompatActivity(), LocationEngineListener, PermissionsLis
 
         mapView = findViewById(R.id.mapView)
         mapView.onCreate(savedInstanceState)
-        mapView.getMapAsync({ mapboxMap ->
+        mapView.getMapAsync { mapboxMap ->
             this.map = mapboxMap
             enableLocationPlugin()
 
@@ -129,11 +125,12 @@ class MainActivity : AppCompatActivity(), LocationEngineListener, PermissionsLis
 
                     if(::originLocation.isInitialized) {
                         destinationPosition = Point.fromJson(selectedFeature.geometry()!!.toJson())
+
                         originCoord = LatLng(originLocation.latitude, originLocation.longitude)
                         originPosition = Point.fromLngLat(originCoord!!.longitude, originCoord!!.latitude)
                         getRoute(originPosition!!, destinationPosition!!)
 
-                        routeSnackbar.setAction("Navigate", { _ ->
+                        routeSnackbar.setAction("Navigate") { _ ->
                             val simulateRoute = true;
                             val options : NavigationLauncherOptions = NavigationLauncherOptions.builder()
                                     .directionsRoute(currentRoute)
@@ -142,7 +139,7 @@ class MainActivity : AppCompatActivity(), LocationEngineListener, PermissionsLis
 
                             // Call this method with Context from within an Activity
                             NavigationLauncher.startNavigation(this, options)
-                        })
+                        }
                     }
 
                     routeSnackbar.show();
@@ -166,14 +163,7 @@ class MainActivity : AppCompatActivity(), LocationEngineListener, PermissionsLis
                     }
                 }
             }
-        })
-
-        /*setSupportActionBar(toolbar)
-
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
-        }*/
+        }
     }
 
     @SuppressLint("MissingPermission")

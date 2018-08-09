@@ -18,7 +18,7 @@
         mapbox:mapbox_cameraTargetLat="47.66"
         mapbox:mapbox_cameraTargetLng="9.41"
         mapbox:mapbox_styleUrl="mapbox://styles/felixaetem/cjkl8unu064xg2rteh2bz5tpu"
-        mapbox:mapbox_cameraZoom="12" >
+        mapbox:mapbox_cameraZoom="12">
 
     </com.mapbox.mapboxsdk.maps.MapView>
 
