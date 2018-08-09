@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Atlas</string>
+    <string name="action_settings">Settings</string>
+    <string name="access_token" translatable="false">pk.eyJ1IjoiZmVsaXhhZXRlbSIsImEiOiI2MmE4YmQ4YjIzOTI2YjY3ZWFmNzUwOTU5NzliOTAxOCJ9.nshlehFGmK_6YmZarM2SHA</string>
+</resources>
