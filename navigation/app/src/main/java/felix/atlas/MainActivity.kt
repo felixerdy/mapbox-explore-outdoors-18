@@ -21,6 +21,12 @@ import com.mapbox.android.core.permissions.PermissionsManager
 import com.mapbox.mapboxsdk.plugins.locationlayer.modes.RenderMode
 import com.mapbox.mapboxsdk.maps.MapboxMap
 import android.support.v4.content.ContextCompat
+import android.util.Log
+import android.view.View
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
+import android.widget.ImageView
+import android.widget.TextView
 import com.mapbox.android.core.location.LocationEngineListener
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory
 import com.mapbox.android.core.location.LocationEnginePriority
@@ -94,9 +100,6 @@ class MainActivity : AppCompatActivity(), LocationEngineListener, PermissionsLis
             val swimIcon : Drawable? = ContextCompat.getDrawable(this, R.drawable.ic_swim)
             mapboxMap.addImage("swim", drawableToBitmap(swimIcon!!))
 
-            val starIcon : Drawable? = ContextCompat.getDrawable(this, R.drawable.ic_star)
-            mapboxMap.addImage("view", drawableToBitmap(starIcon!!))
-
             val snackIcon : Drawable? = ContextCompat.getDrawable(this, R.drawable.ic_fast_food)
             mapboxMap.addImage("snack", drawableToBitmap(snackIcon!!))
 
@@ -115,6 +118,7 @@ class MainActivity : AppCompatActivity(), LocationEngineListener, PermissionsLis
             mapboxMap.addLayer(myLayer)
 
             mapboxMap.addOnMapClickListener { point ->
+
                 val screenPoint : PointF = mapboxMap.projection.toScreenLocation(point)
                 val features : List<Feature> = mapboxMap.queryRenderedFeatures(screenPoint, "places-layer")
                 if (!features.isEmpty()) {
@@ -123,12 +127,33 @@ class MainActivity : AppCompatActivity(), LocationEngineListener, PermissionsLis
                     routeSnackbar = Snackbar.make(findViewById(R.id.atlas_content), title,
                             Snackbar.LENGTH_INDEFINITE)
 
+                    val type: String = selectedFeature.getStringProperty("type")
+
+                    var icon = ContextCompat.getDrawable(this, R.drawable.ic_bbq)
+
+                    when (type) {
+                        "bbq" -> icon = ContextCompat.getDrawable(this, R.drawable.ic_bbq)
+                        "cafe" -> icon = ContextCompat.getDrawable(this, R.drawable.ic_cafe)
+                        "hiking" -> icon = ContextCompat.getDrawable(this, R.drawable.ic_mountain)
+                        "climbing" -> icon = ContextCompat.getDrawable(this, R.drawable.ic_mountain)
+                        "swim" -> icon = ContextCompat.getDrawable(this, R.drawable.ic_swim)
+                        "snack" -> icon = ContextCompat.getDrawable(this, R.drawable.ic_fast_food)
+                        "museum" -> icon = ContextCompat.getDrawable(this, R.drawable.ic_museum)
+                        "view" -> icon = ContextCompat.getDrawable(this, R.drawable.ic_attraktion)
+                    }
+
+                    // findViewById<View>(R.id.cardView).visibility = View.INVISIBLE;
+                    findViewById<TextView>(R.id.textView).text = title
+                    findViewById<ImageView>(R.id.imageView).setImageDrawable(icon)
+
                     if(::originLocation.isInitialized) {
                         destinationPosition = Point.fromJson(selectedFeature.geometry()!!.toJson())
 
                         originCoord = LatLng(originLocation.latitude, originLocation.longitude)
                         originPosition = Point.fromLngLat(originCoord!!.longitude, originCoord!!.latitude)
                         getRoute(originPosition!!, destinationPosition!!)
+
+                        findViewById<TextView>(R.id.distanceTextView).text = currentRoute?.distance().toString()
 
                         routeSnackbar.setAction("Navigate") { _ ->
                             val simulateRoute = true;
@@ -352,7 +377,6 @@ class MainActivity : AppCompatActivity(), LocationEngineListener, PermissionsLis
             exception.printStackTrace()
             return null
         }
-
     }
 
     private fun  drawableToBitmap (drawable : Drawable ) : Bitmap {

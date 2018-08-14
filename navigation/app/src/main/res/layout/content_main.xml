@@ -17,9 +17,76 @@
         android:layout_height="match_parent"
         mapbox:mapbox_cameraTargetLat="47.66"
         mapbox:mapbox_cameraTargetLng="9.41"
+        mapbox:mapbox_cameraZoom="12"
         mapbox:mapbox_styleUrl="mapbox://styles/felixaetem/cjkl8unu064xg2rteh2bz5tpu"
-        mapbox:mapbox_cameraZoom="12">
+        tools:layout_editor_absoluteX="30dp"
+        tools:layout_editor_absoluteY="0dp">
+
 
     </com.mapbox.mapboxsdk.maps.MapView>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="match_parent"
+        android:layout_height="94dp"
+        android:layout_marginBottom="48dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginStart="24dp"
+        android:layout_weight="0.9"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="12dp"
+        app:contentPadding="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/mapView">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:adjustViewBounds="false"
+                mapbox:srcCompat="@drawable/ic_attraktion" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:text="TextView"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
+
+                <TextView
+                    android:id="@+id/distanceTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:text="TextView" />
+            </LinearLayout>
+
+            <ImageButton
+                android:id="@+id/imageButton"
+                style="@android:style/Widget.Material.Light.ImageButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:elevation="4dp"
+                mapbox:srcCompat="@drawable/ic_navigation" />
+
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
 
 </android.support.constraint.ConstraintLayout>
