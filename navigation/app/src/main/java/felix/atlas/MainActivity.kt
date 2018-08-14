@@ -94,9 +94,6 @@ class MainActivity : AppCompatActivity(), LocationEngineListener, PermissionsLis
             val swimIcon : Drawable? = ContextCompat.getDrawable(this, R.drawable.ic_swim)
             mapboxMap.addImage("swim", drawableToBitmap(swimIcon!!))
 
-            val starIcon : Drawable? = ContextCompat.getDrawable(this, R.drawable.ic_star)
-            mapboxMap.addImage("view", drawableToBitmap(starIcon!!))
-
             val snackIcon : Drawable? = ContextCompat.getDrawable(this, R.drawable.ic_fast_food)
             mapboxMap.addImage("snack", drawableToBitmap(snackIcon!!))
 
