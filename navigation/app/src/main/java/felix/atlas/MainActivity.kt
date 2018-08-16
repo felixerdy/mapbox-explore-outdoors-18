@@ -25,6 +25,7 @@ import android.support.v7.widget.CardView
 import android.view.View
 import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.SeekBar
 import android.widget.TextView
 import com.github.florent37.kotlin.pleaseanimate.please
 import com.mapbox.android.core.location.LocationEngineListener
@@ -32,6 +33,7 @@ import com.mapbox.mapboxsdk.camera.CameraUpdateFactory
 import com.mapbox.android.core.location.LocationEnginePriority
 import com.mapbox.android.core.location.LocationEngineProvider
 import com.mapbox.android.core.permissions.PermissionsListener
+import com.mapbox.api.directions.v5.DirectionsCriteria
 import com.mapbox.api.directions.v5.models.DirectionsResponse
 import com.mapbox.api.directions.v5.models.DirectionsRoute
 import com.mapbox.geojson.Feature
@@ -64,12 +66,12 @@ class MainActivity : AppCompatActivity(), LocationEngineListener, PermissionsLis
 
     private var originCoord : LatLng? = null
 
-    private var originPosition : Point? = null
-    private var destinationPosition : Point? = null
+    private lateinit var originPosition : Point
+    private lateinit var destinationPosition : Point
     private var currentRoute : DirectionsRoute? = null
     private var navigationMapRoute : NavigationMapRoute? = null
 
-    private lateinit var routeSnackbar : Snackbar
+    private var movingCriteria : String = DirectionsCriteria.PROFILE_CYCLING
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -125,13 +127,9 @@ class MainActivity : AppCompatActivity(), LocationEngineListener, PermissionsLis
                 if (!features.isEmpty()) {
                     val selectedFeature: Feature = features[0]
                     val title: String = selectedFeature.getStringProperty("name")
-                    //routeSnackbar = Snackbar.make(findViewById(R.id.atlas_content), title,
-                    //        Snackbar.LENGTH_INDEFINITE)
-
                     val type: String = selectedFeature.getStringProperty("type")
 
                     var icon = ContextCompat.getDrawable(this, R.drawable.ic_bbq)
-
                     when (type) {
                         "bbq" -> icon = ContextCompat.getDrawable(this, R.drawable.ic_bbq)
                         "cafe" -> icon = ContextCompat.getDrawable(this, R.drawable.ic_cafe)
@@ -152,6 +150,11 @@ class MainActivity : AppCompatActivity(), LocationEngineListener, PermissionsLis
                             bottomOfItsParent(marginDp = 48f)
                             visible()
                         }
+
+                        animate(findViewById<SeekBar>(R.id.seekBar)) toBe {
+                            rightOfItsParent(marginDp = -8f)
+                            visible()
+                        }
                     }.start()
 
                     findViewById<TextView>(R.id.timeTextView).visibility = View.INVISIBLE
@@ -170,6 +173,10 @@ class MainActivity : AppCompatActivity(), LocationEngineListener, PermissionsLis
                             bottomOfItsParent(marginDp = -150f)
                             invisible()
                         }
+                        animate(findViewById<SeekBar>(R.id.seekBar)) toBe {
+                            rightOfItsParent(marginDp = -300f)
+                            invisible()
+                        }
                     }.start()
                     if (navigationMapRoute != null) {
                         navigationMapRoute!!.removeRoute()
@@ -177,6 +184,38 @@ class MainActivity : AppCompatActivity(), LocationEngineListener, PermissionsLis
                 }
             }
         }
+
+        var seekbar = findViewById<SeekBar>(R.id.seekBar)
+        seekbar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onStopTrackingTouch(p0: SeekBar?) {
+
+            }
+
+            override fun onStartTrackingTouch(p0: SeekBar?) {
+
+            }
+
+            override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+                when(progress) {
+                    0 -> {
+                        movingCriteria = DirectionsCriteria.PROFILE_DRIVING_TRAFFIC
+                        seekbar.thumb = applicationContext.getDrawable(R.drawable.ic_car)
+                    }
+                    1 -> {
+                        movingCriteria = DirectionsCriteria.PROFILE_CYCLING
+                        seekbar.thumb = applicationContext.getDrawable(R.drawable.ic_bicycle)
+                    }
+                    2 -> {
+                        movingCriteria = DirectionsCriteria.PROFILE_WALKING
+                        seekbar.thumb = applicationContext.getDrawable(R.drawable.ic_walk)
+                    }
+                }
+                if(::originPosition.isInitialized && ::destinationPosition.isInitialized) {
+                    getRoute(originPosition, destinationPosition)
+                }
+
+            }
+        })
     }
 
     @SuppressLint("MissingPermission")
@@ -303,6 +342,7 @@ class MainActivity : AppCompatActivity(), LocationEngineListener, PermissionsLis
                 .accessToken(Mapbox.getAccessToken()!!)
                 .origin(origin)
                 .destination(destination)
+                .profile(movingCriteria)
                 .build()
                 .getRoute(object : Callback<DirectionsResponse> {
                     override fun onResponse(call: retrofit2.Call<DirectionsResponse>?, response: Response<DirectionsResponse>?) {

@@ -16,8 +16,10 @@
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
         mapbox:mapbox_cameraTargetLat="47.66"
         mapbox:mapbox_cameraTargetLng="9.41"
         mapbox:mapbox_cameraZoom="12"
@@ -25,6 +27,24 @@
 
 
     </com.mapbox.mapboxsdk.maps.MapView>
+
+    <SeekBar
+        android:id="@+id/seekBar"
+        style="@style/Widget.AppCompat.SeekBar.Discrete"
+        android:layout_width="140dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="200dp"
+        android:layout_marginEnd="-100dp"
+        android:visibility="invisible"
+        android:background="@drawable/ic_seek"
+        android:max="2"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
+        android:progress="1"
+        android:rotation="90"
+        android:thumb="@drawable/ic_bicycle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <android.support.v7.widget.CardView
         android:id="@+id/cardView"
@@ -84,7 +104,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@android:color/transparent"
+                android:background="?attr/selectableItemBackgroundBorderless"
                 android:elevation="4dp"
                 android:tint="@color/mapbox_blue"
                 android:visibility="invisible"
