@@ -21,11 +21,19 @@ import com.mapbox.android.core.permissions.PermissionsManager
 import com.mapbox.mapboxsdk.plugins.locationlayer.modes.RenderMode
 import com.mapbox.mapboxsdk.maps.MapboxMap
 import android.support.v4.content.ContextCompat
+import android.support.v7.widget.CardView
+import android.view.View
+import android.widget.ImageButton
+import android.widget.ImageView
+import android.widget.SeekBar
+import android.widget.TextView
+import com.github.florent37.kotlin.pleaseanimate.please
 import com.mapbox.android.core.location.LocationEngineListener
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory
 import com.mapbox.android.core.location.LocationEnginePriority
 import com.mapbox.android.core.location.LocationEngineProvider
 import com.mapbox.android.core.permissions.PermissionsListener
+import com.mapbox.api.directions.v5.DirectionsCriteria
 import com.mapbox.api.directions.v5.models.DirectionsResponse
 import com.mapbox.api.directions.v5.models.DirectionsRoute
 import com.mapbox.geojson.Feature
@@ -44,6 +52,9 @@ import retrofit2.Callback
 import retrofit2.Response
 import timber.log.Timber
 import java.nio.charset.Charset
+import java.time.LocalTime
+import kotlin.math.round
+import kotlin.math.roundToLong
 
 
 class MainActivity : AppCompatActivity(), LocationEngineListener, PermissionsListener {
@@ -57,12 +68,12 @@ class MainActivity : AppCompatActivity(), LocationEngineListener, PermissionsLis
 
     private var originCoord : LatLng? = null
 
-    private var originPosition : Point? = null
-    private var destinationPosition : Point? = null
+    private lateinit var originPosition : Point
+    private lateinit var destinationPosition : Point
     private var currentRoute : DirectionsRoute? = null
     private var navigationMapRoute : NavigationMapRoute? = null
 
-    private lateinit var routeSnackbar : Snackbar
+    private var movingCriteria : String = DirectionsCriteria.PROFILE_CYCLING
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -112,13 +123,43 @@ class MainActivity : AppCompatActivity(), LocationEngineListener, PermissionsLis
             mapboxMap.addLayer(myLayer)
 
             mapboxMap.addOnMapClickListener { point ->
+
                 val screenPoint : PointF = mapboxMap.projection.toScreenLocation(point)
                 val features : List<Feature> = mapboxMap.queryRenderedFeatures(screenPoint, "places-layer")
                 if (!features.isEmpty()) {
                     val selectedFeature: Feature = features[0]
                     val title: String = selectedFeature.getStringProperty("name")
-                    routeSnackbar = Snackbar.make(findViewById(R.id.atlas_content), title,
-                            Snackbar.LENGTH_INDEFINITE)
+                    val type: String = selectedFeature.getStringProperty("type")
+
+                    var icon = ContextCompat.getDrawable(this, R.drawable.ic_bbq)
+                    when (type) {
+                        "bbq" -> icon = ContextCompat.getDrawable(this, R.drawable.ic_bbq)
+                        "cafe" -> icon = ContextCompat.getDrawable(this, R.drawable.ic_cafe)
+                        "hiking" -> icon = ContextCompat.getDrawable(this, R.drawable.ic_mountain)
+                        "climbing" -> icon = ContextCompat.getDrawable(this, R.drawable.ic_mountain)
+                        "swim" -> icon = ContextCompat.getDrawable(this, R.drawable.ic_swim)
+                        "snack" -> icon = ContextCompat.getDrawable(this, R.drawable.ic_fast_food)
+                        "museum" -> icon = ContextCompat.getDrawable(this, R.drawable.ic_museum)
+                        "view" -> icon = ContextCompat.getDrawable(this, R.drawable.ic_attraktion)
+                    }
+
+                    findViewById<CardView>(R.id.cardView).visibility = View.VISIBLE;
+                    findViewById<TextView>(R.id.textView).text = title
+                    findViewById<ImageView>(R.id.imageView).setImageDrawable(icon)
+
+                    please {
+                        animate(findViewById<CardView>(R.id.cardView)) toBe {
+                            bottomOfItsParent(marginDp = 48f)
+                            visible()
+                        }
+
+                        animate(findViewById<SeekBar>(R.id.seekBar)) toBe {
+                            rightOfItsParent(marginDp = -8f)
+                            visible()
+                        }
+                    }.start()
+
+                    findViewById<TextView>(R.id.timeTextView).visibility = View.INVISIBLE
 
                     if(::originLocation.isInitialized) {
                         destinationPosition = Point.fromJson(selectedFeature.geometry()!!.toJson())
@@ -126,41 +167,57 @@ class MainActivity : AppCompatActivity(), LocationEngineListener, PermissionsLis
                         originCoord = LatLng(originLocation.latitude, originLocation.longitude)
                         originPosition = Point.fromLngLat(originCoord!!.longitude, originCoord!!.latitude)
                         getRoute(originPosition!!, destinationPosition!!)
-
-                        routeSnackbar.setAction("Navigate") { _ ->
-                            val simulateRoute = true;
-                            val options : NavigationLauncherOptions = NavigationLauncherOptions.builder()
-                                    .directionsRoute(currentRoute)
-                                    .shouldSimulateRoute(simulateRoute)
-                                    .build();
-
-                            // Call this method with Context from within an Activity
-                            NavigationLauncher.startNavigation(this, options)
-                        }
                     }
-
-                    routeSnackbar.show();
-
-                    /*
-                    if (destinationMarker != null) {
-                        mapboxMap.removeMarker(destinationMarker!!)
-                    }
-                    destinationCoord = point
-                    destinationMarker = mapboxMap.addMarker(MarkerOptions().position(destinationCoord))
-
-                    destinationPosition = Point.fromLngLat(destinationCoord!!.longitude, destinationCoord!!.latitude)
-                    */
 
                 } else {
-                    if(::routeSnackbar.isInitialized) {
-                        routeSnackbar.dismiss()
-                    }
+                    please {
+                        animate(findViewById<CardView>(R.id.cardView)) toBe {
+                            bottomOfItsParent(marginDp = -150f)
+                            invisible()
+                        }
+                        animate(findViewById<SeekBar>(R.id.seekBar)) toBe {
+                            rightOfItsParent(marginDp = -300f)
+                            invisible()
+                        }
+                    }.start()
                     if (navigationMapRoute != null) {
                         navigationMapRoute!!.removeRoute()
                     }
                 }
             }
         }
+
+        var seekbar = findViewById<SeekBar>(R.id.seekBar)
+        seekbar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onStopTrackingTouch(p0: SeekBar?) {
+
+            }
+
+            override fun onStartTrackingTouch(p0: SeekBar?) {
+
+            }
+
+            override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+                when(progress) {
+                    0 -> {
+                        movingCriteria = DirectionsCriteria.PROFILE_DRIVING_TRAFFIC
+                        seekbar.thumb = applicationContext.getDrawable(R.drawable.ic_car)
+                    }
+                    1 -> {
+                        movingCriteria = DirectionsCriteria.PROFILE_CYCLING
+                        seekbar.thumb = applicationContext.getDrawable(R.drawable.ic_bicycle)
+                    }
+                    2 -> {
+                        movingCriteria = DirectionsCriteria.PROFILE_WALKING
+                        seekbar.thumb = applicationContext.getDrawable(R.drawable.ic_walk)
+                    }
+                }
+                if(::originPosition.isInitialized && ::destinationPosition.isInitialized) {
+                    getRoute(originPosition, destinationPosition)
+                }
+
+            }
+        })
     }
 
     @SuppressLint("MissingPermission")
@@ -283,13 +340,14 @@ class MainActivity : AppCompatActivity(), LocationEngineListener, PermissionsLis
     }
 
     private fun getRoute(origin : Point, destination : Point) {
-
         NavigationRoute.builder(this)
                 .accessToken(Mapbox.getAccessToken()!!)
                 .origin(origin)
                 .destination(destination)
+                .profile(movingCriteria)
                 .build()
                 .getRoute(object : Callback<DirectionsResponse> {
+                    @SuppressLint("SetTextI18n")
                     override fun onResponse(call: retrofit2.Call<DirectionsResponse>?, response: Response<DirectionsResponse>?) {
                         Timber.d("Response code: %s", response?.code())
                         if (response?.body() == null) {
@@ -309,6 +367,27 @@ class MainActivity : AppCompatActivity(), LocationEngineListener, PermissionsLis
                             navigationMapRoute = NavigationMapRoute(null, mapView, map, R.style.NavigationMapRoute)
                         }
                         navigationMapRoute?.addRoute(currentRoute)
+
+                        val distance = round(currentRoute?.distance()!!.div(10)).div(100)
+
+                        findViewById<TextView>(R.id.distanceTextView).text = "${distance}km"
+
+                        val travelTimeSeconds = currentRoute?.duration()!!.toLong()
+                        val timeOfDay : LocalTime = LocalTime.ofSecondOfDay(travelTimeSeconds)
+                        findViewById<TextView>(R.id.timeTextView).text = "${timeOfDay.hour}h ${timeOfDay.minute}min"
+
+                        findViewById<TextView>(R.id.timeTextView).visibility = View.VISIBLE
+                        findViewById<ImageButton>(R.id.imageButton).visibility = View.VISIBLE
+
+                        findViewById<ImageButton>(R.id.imageButton).setOnClickListener { _ ->
+                            val options : NavigationLauncherOptions = NavigationLauncherOptions.builder()
+                                    .directionsRoute(currentRoute)
+                                    .shouldSimulateRoute(true)
+                                    .build()
+
+                            // Call this method with Context from within an Activity
+                            NavigationLauncher.startNavigation(this@MainActivity, options)
+                        }
                     }
 
                     override fun onFailure(call: retrofit2.Call<DirectionsResponse>?, t: Throwable?) {
@@ -334,7 +413,6 @@ class MainActivity : AppCompatActivity(), LocationEngineListener, PermissionsLis
     }
 
     private fun loadGeoJsonFromAsset(filename: String): String? {
-
         try {
             // Load GeoJSON file
             val `is` = assets.open(filename)
@@ -349,7 +427,6 @@ class MainActivity : AppCompatActivity(), LocationEngineListener, PermissionsLis
             exception.printStackTrace()
             return null
         }
-
     }
 
     private fun  drawableToBitmap (drawable : Drawable ) : Bitmap {
