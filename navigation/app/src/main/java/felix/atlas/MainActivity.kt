@@ -53,6 +53,8 @@ import retrofit2.Response
 import timber.log.Timber
 import java.nio.charset.Charset
 import java.time.LocalTime
+import kotlin.math.round
+import kotlin.math.roundToLong
 
 
 class MainActivity : AppCompatActivity(), LocationEngineListener, PermissionsListener {
@@ -345,6 +347,7 @@ class MainActivity : AppCompatActivity(), LocationEngineListener, PermissionsLis
                 .profile(movingCriteria)
                 .build()
                 .getRoute(object : Callback<DirectionsResponse> {
+                    @SuppressLint("SetTextI18n")
                     override fun onResponse(call: retrofit2.Call<DirectionsResponse>?, response: Response<DirectionsResponse>?) {
                         Timber.d("Response code: %s", response?.code())
                         if (response?.body() == null) {
@@ -365,9 +368,12 @@ class MainActivity : AppCompatActivity(), LocationEngineListener, PermissionsLis
                         }
                         navigationMapRoute?.addRoute(currentRoute)
 
+                        val distance = round(currentRoute?.distance()!!.div(10)).div(100)
+
+                        findViewById<TextView>(R.id.distanceTextView).text = "${distance}km"
+
                         val travelTimeSeconds = currentRoute?.duration()!!.toLong()
                         val timeOfDay : LocalTime = LocalTime.ofSecondOfDay(travelTimeSeconds)
-
                         findViewById<TextView>(R.id.timeTextView).text = "${timeOfDay.hour}h ${timeOfDay.minute}min"
 
                         findViewById<TextView>(R.id.timeTextView).visibility = View.VISIBLE
