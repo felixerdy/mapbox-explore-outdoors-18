@@ -1,0 +1,244 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications: []
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 1196656712219472}
+  m_IsPrefabParent: 1
+--- !u!1 &1196656712219472
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 224342504456367808}
+  - component: {fileID: 114015234128838056}
+  - component: {fileID: 114949705311994688}
+  - component: {fileID: 222441067550979310}
+  - component: {fileID: 114162248739759944}
+  - component: {fileID: 114074259271408334}
+  - component: {fileID: 114110527177078242}
+  m_Layer: 0
+  m_Name: MapboxMap
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 4294967295
+  m_IsActive: 0
+--- !u!114 &114015234128838056
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1196656712219472}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd961b1c9541a4cee99686069ecce852, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _initializeOnStart: 1
+  _options:
+    locationOptions:
+      latitudeLongitude: 47.64, 9.41
+      zoom: 10.91
+    extentOptions:
+      extentType: 1
+      cameraBoundsOptions:
+        camera: {fileID: 0}
+        visibleBuffer: 0
+        disposeBuffer: 0
+        updateInterval: 0
+      rangeAroundCenterOptions:
+        west: 1
+        north: 1
+        east: 1
+        south: 1
+      rangeAroundTransformOptions:
+        targetTransform: {fileID: 0}
+        visibleBuffer: 0
+        disposeBuffer: 0
+    placementOptions:
+      placementType: 1
+      snapMapToZero: 0
+    scalingOptions:
+      scalingType: 1
+      unityTileSize: 100
+    loadingTexture: {fileID: 2800000, guid: e2896a92727704803a9c422b043eae89, type: 3}
+  _imagery:
+    _layerProperty:
+      sourceType: 6
+      sourceOptions:
+        isActive: 1
+        layerSource:
+          Name: Streets
+          Id: mapbox://styles/felixaetem/cjkl8unu064xg2rteh2bz5tpu
+          Modified: 
+          UserName: 
+      rasterOptions:
+        useRetina: 1
+        useCompression: 1
+        useMipMap: 1
+  _terrain:
+    _layerProperty:
+      sourceType: 0
+      sourceOptions:
+        isActive: 1
+        layerSource:
+          Name: 
+          Id: mapbox.terrain-rgb
+          Modified: 
+          UserName: 
+      elevationLayerType: 1
+      requiredOptions:
+        baseMaterial: {fileID: 2100000, guid: b9f23e9bce724fa4daac57ecded470b8, type: 2}
+        addCollider: 0
+        exaggerationFactor: 3
+      modificationOptions:
+        sampleCount: 10
+        useRelativeHeight: 1
+        earthRadius: 1000
+      unityLayerOptions:
+        addToLayer: 1
+        layerId: 0
+      sideWallOptions:
+        isActive: 1
+        wallHeight: 10
+        wallMaterial: {fileID: 2100000, guid: 5cb4277d0de1443ce84170893d05adca, type: 2}
+  _vectorData:
+    _layerProperty:
+      tileJsonData:
+        tileJSONLoaded: 0
+        LayerDisplayNames:
+        - admin
+        - aeroway
+        - airport_label
+        - barrier_line
+        - building
+        - country_label
+        - housenum_label
+        - landuse
+        - landuse_overlay
+        - marine_label
+        - motorway_junction
+        - mountain_peak_label
+        - place_label
+        - poi_label
+        - rail_station_label
+        - road
+        - road_label
+        - state_label
+        - water
+        - water_label
+        - waterway
+        - waterway_label
+      _sourceType: 0
+      sourceOptions:
+        isActive: 1
+        layerSource:
+          Name: Mapbox Terrain
+          Id: mapbox.3d-buildings,mapbox.mapbox-streets-v7
+          Modified: 
+          UserName: 
+      useOptimizedStyle: 0
+      optimizedStyle:
+        Name: 
+        Id: 
+        Modified: 
+        UserName: 
+      performanceOptions:
+        isEnabled: 1
+        entityPerCoroutine: 20
+      vectorSubLayers: []
+      locationPrefabList: []
+  _tileProvider: {fileID: 0}
+--- !u!114 &114074259271408334
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1196656712219472}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b5c93e58750046d0bc4c6c05cdd9b58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AugmentedMap: {fileID: 1196656712219472}
+--- !u!114 &114110527177078242
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1196656712219472}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c089af9299bc484fbc37f5fdceada4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Map: {fileID: 114015234128838056}
+  JSONFile: {fileID: 4900000, guid: 6de2008a542754bdd96bea2be60d459f, type: 3}
+  Attraction: {fileID: 100000, guid: 6893175dece98489ca1050bb15fbae9d, type: 3}
+  Bbq: {fileID: 100000, guid: 3de37616dd5c1481899660652cfc3e07, type: 3}
+  Cafe: {fileID: 100000, guid: 1eac67f68796943a2b0f8bf7a4a40259, type: 3}
+  FastFood: {fileID: 100002, guid: 262cb2bc81ddf4d5e8f03e9d29aa896f, type: 3}
+  Mountain: {fileID: 100002, guid: 9d479f16954614c83b0ad9923859f1b4, type: 3}
+  Museum: {fileID: 100002, guid: 50e705b826cf2483d862bb9faaa299d4, type: 3}
+  Swim: {fileID: 100002, guid: 82096454745ac4472a0f12646aad3942, type: 3}
+--- !u!114 &114162248739759944
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1196656712219472}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5209c2a5ffaf941c5b8bbbb59a81c0c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _panSpeed: 0.25
+  _zoomSpeed: 0.25
+  _referenceCamera: {fileID: 0}
+  _mapManager: {fileID: 114015234128838056}
+--- !u!114 &114949705311994688
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1196656712219472}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1254083943, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_AspectMode: 3
+  m_AspectRatio: 0.5625
+--- !u!222 &222441067550979310
+CanvasRenderer:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1196656712219472}
+--- !u!224 &224342504456367808
+RectTransform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1196656712219472}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.001, y: 0.001, z: 0.001}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
