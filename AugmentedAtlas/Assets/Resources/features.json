@@ -1,0 +1,170 @@
+{
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "type": "cafe",
+        "name": "Cafe Höpker"
+      },
+      "geometry": {
+        "coordinates": [
+          9.42253,
+          47.670073
+        ],
+        "type": "Point"
+      },
+      "id": "1c81257407973c33de2a400fd01a1523"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "type": "hiking",
+        "name": "Pfänder"
+      },
+      "geometry": {
+        "coordinates": [
+          9.779459,
+          47.506453
+        ],
+        "type": "Point"
+      },
+      "id": "1e6bc74edc1ac80e511cab7c8201e55d"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "type": "swim",
+        "name": "Frei- und Seebad Fischbach"
+      },
+      "geometry": {
+        "coordinates": [
+          9.415693,
+          47.667679
+        ],
+        "type": "Point"
+      },
+      "id": "440590e282fe13de8555d7216f3a7153"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "type": "hiking",
+        "name": "Säntis"
+      },
+      "geometry": {
+        "coordinates": [
+          9.342838,
+          47.249335
+        ],
+        "type": "Point"
+      },
+      "id": "4cb3dfd4a71ad52d4c1dde6fca3b090c"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "type": "bbq",
+        "name": "Alter Campingplatz Manzell"
+      },
+      "geometry": {
+        "coordinates": [
+          9.422683,
+          47.665247
+        ],
+        "type": "Point"
+      },
+      "id": "651e388015642b0ef53f412c52f71b1b"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Dornier Museum",
+        "type": "museum"
+      },
+      "geometry": {
+        "coordinates": [
+          9.517963,
+          47.670429
+        ],
+        "type": "Point"
+      },
+      "id": "713528c95ffde5b316faec03405fffc5"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "type": "view",
+        "name": "Rheinfall"
+      },
+      "geometry": {
+        "coordinates": [
+          8.615183,
+          47.678017
+        ],
+        "type": "Point"
+      },
+      "id": "820f7e5e616ac439e4f76a52cffcf8d3"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "type": "swim",
+        "name": "Strand Fischbach"
+      },
+      "geometry": {
+        "coordinates": [
+          9.417645,
+          47.666468
+        ],
+        "type": "Point"
+      },
+      "id": "a74305e1309fddc46a011c24831a4dc0"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "type": "snack",
+        "name": "See Döner"
+      },
+      "geometry": {
+        "coordinates": [
+          9.364252,
+          47.665167
+        ],
+        "type": "Point"
+      },
+      "id": "e01adefedc3bb891df37f5877050f927"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "type": "view",
+        "name": "Gehrenbergturm"
+      },
+      "geometry": {
+        "coordinates": [
+          9.403941,
+          47.736054
+        ],
+        "type": "Point"
+      },
+      "id": "e94fc7fbba0c40ccb24690041c526b86"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "type": "climbing",
+        "name": "Känzele Klettersteig"
+      },
+      "geometry": {
+        "coordinates": [
+          9.762133,
+          47.487643
+        ],
+        "type": "Point"
+      },
+      "id": "fd802a2ea03ab46981660b27841971ce"
+    }
+  ],
+  "type": "FeatureCollection"
+}

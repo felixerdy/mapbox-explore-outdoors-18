@@ -8,6 +8,8 @@ This repository contains my contribution projects to the [Mapbox Explore Outdoor
 
 ### Challenge 2 - [Navigation to POIs](navigation)
 
+### Challenge 3 - [AR Visualization](AugmentedAtlas)
+
 ## Miscellaneous
 
 ### [Custom icons](icons) based on [Mapbox Maki Icons](https://www.mapbox.com/maki-icons/)
